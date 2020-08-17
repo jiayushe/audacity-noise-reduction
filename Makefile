@@ -48,7 +48,7 @@ CXXFLAGS := -std=c++11
 # C/C++ flags
 CPPFLAGS := -Wall -Wextra -pedantic
 # linker flags
-LDFLAGS := -lsndfile
+LDFLAGS := -lsndfile -pthread -ldl
 # flags required for dependency generation; passed to compilers
 DEPFLAGS = -MT $@ -MD -MP -MF $(DEPDIR)/$*.Td
 

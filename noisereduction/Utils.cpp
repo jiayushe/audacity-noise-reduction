@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <memory.h>
 #include <algorithm>
 
 SndMmap::SndMmap(const char* path) {

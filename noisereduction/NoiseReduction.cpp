@@ -528,7 +528,7 @@ void NoiseReductionWorker::ProcessSamples
 {
     while (len && mOutStepCount * mStepSize < mInSampleCount) {
         auto avail = std::min(len, mWindowSize - mInWavePos);
-        memmove(&mInWaveBuffer[mInWavePos], buffer, avail * sizeof(float));
+        wmemmove((wchar_t *)&mInWaveBuffer[mInWavePos], (wchar_t *)buffer, avail * sizeof(float));
         buffer += avail;
         len -= avail;
         mInWavePos += avail;
@@ -543,7 +543,7 @@ void NoiseReductionWorker::ProcessSamples
             RotateHistoryWindows();
 
             // Rotate for overlap-add
-            memmove(&mInWaveBuffer[0], &mInWaveBuffer[mStepSize],
+            wmemmove((wchar_t *)&mInWaveBuffer[0], (wchar_t *)&mInWaveBuffer[mStepSize],
                     (mWindowSize - mStepSize) * sizeof(float));
             mInWavePos -= mStepSize;
         }
@@ -557,7 +557,7 @@ void NoiseReductionWorker::FillFirstHistoryWindow()
         for (size_t ii = 0; ii < mWindowSize; ++ii)
             mFFTBuffer[ii] = mInWaveBuffer[ii] * mInWindow[ii];
     else
-        memmove(&mFFTBuffer[0], &mInWaveBuffer[0], mWindowSize * sizeof(float));
+        wmemmove((wchar_t *)&mFFTBuffer[0], (wchar_t *)&mInWaveBuffer[0], mWindowSize * sizeof(float));
     RealFFTf(&mFFTBuffer[0], hFFT.get());
 
     Record &record = *mQueue[0];
@@ -886,7 +886,7 @@ void NoiseReductionWorker::ReduceNoise
         }
 
         // Shift the remainder over.
-        memmove(buffer, buffer + mStepSize, sizeof(float) * (mWindowSize - mStepSize));
+        wmemmove((wchar_t *)buffer, (wchar_t *)buffer + mStepSize, sizeof(float) * (mWindowSize - mStepSize));
         std::fill(buffer + mWindowSize - mStepSize, buffer + mWindowSize, 0.0f);
     }
 }
